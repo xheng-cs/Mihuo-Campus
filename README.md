@@ -12,14 +12,15 @@
 - **GitHub 仓库**：<https://github.com/xheng-cs/Mihuo-Campus>
 - **可正常运行的最终作品（GitHub Pages 在线演示，公网链接，手机可直接打开）**：<https://xheng-cs.github.io/Mihuo-Campus/>
 
-> 在线演示由 GitHub Actions 自动部署（见 `.github/workflows/deploy-pages.yml`）。
-> 首次部署：仓库 **Settings → Pages → Source 选择「GitHub Actions」**，
-> push 到 main 分支后即自动发布。本地运行方式见下文「四、运行方式」。
+> **在线演示的发布方式**：GitHub Pages，Source = **Deploy from a branch（`main` 分支 / 根目录）**。
+> 纯静态项目无需构建，push 到 main 后 Pages 会自动重新发布，约 1 分钟生效。
+> （仓库里另附了一份 Actions 部署工作流 `.github/workflows/deploy-pages.yml`，两种方式均可，
+> 当前生效的是分支发布。）
 >
 > **如果在线链接打不开（404），依次检查**：
 > ① 代码是否已推送到仓库（仓库页面能看到 index.html、css/、js/ 等文件，而不是空的）；
-> ② Settings → Pages 是否已开启（Source = GitHub Actions）；
-> ③ Actions 页签里「Deploy Pages」是否绿勾；部署成功后约 1 分钟生效。
+> ② Settings → Pages 是否已开启（Source = Deploy from a branch，分支 main、目录 /(root)）；
+> ③ 仓库 Actions/Pages 页签里最近一次部署是否成功；成功后约 1 分钟生效。
 >
 > ⚠️ **不要用网页「Upload files」逐个上传源码文件**：网页上传会把目录结构拍平
 > （`css/style.css`、`js/app.js` 会变成根目录下的 `style.css`、`app.js`），

@@ -26,11 +26,11 @@ if git fetch origin main 2>/dev/null; then
 
   if [ "$BEHIND" != "0" ]; then
     echo ""
-    echo "⚠️  远端存在网页端上传（Add files via upload）产生的提交。"
-    echo "    这些提交把目录结构拍平了：css/style.css、js/app.js 等变成了根目录下的"
-    echo "    散文件，index.html 里写的 css/ 与 js/ 路径全部失效（页面会白屏、无样式）；"
-    echo "    .github/workflows 也没上传成功，所以 Pages 永远不会自动部署。"
-    echo "    本脚本将用本地这份完整开发历史覆盖远端（12 次有意义的提交）。"
+    echo "⚠️  远端 main 与本地历史不一致（远端有 $BEHIND 个本地没有的提交）。"
+    echo "    常见原因：之前用过网页端「Upload files」（会把目录结构拍平，"
+    echo "    css/style.css、js/app.js 变成根目录散文件，index.html 找不到样式与脚本），"
+    echo "    或曾通过 GitHub API 推送（内容相同但提交 SHA 不同）。"
+    echo "    本脚本将用本地这份完整开发历史（$(git rev-list --count main) 次提交，含结构正确的源码）覆盖远端。"
     echo ""
     read -r -p "    确认覆盖远端 main？输入 yes 继续: " ans
     if [ "$ans" != "yes" ]; then
@@ -49,9 +49,7 @@ fi
 echo ""
 echo "✅ 代码已推送（目录结构：index.html / css/ / js/ / test/ / tools/ / .github/）。"
 echo ""
-echo "📌 还差一步：开启 Pages（一次性设置，建议现在就做）"
-echo "   1. 打开 https://github.com/xheng-cs/Mihuo-Campus/settings/pages"
-echo "   2. Build and deployment → Source 选「GitHub Actions」→ Save"
-echo "   3. 回到仓库 Actions 页签，等「Deploy Pages」变绿勾 ✅"
-echo "      （若这次推送触发的流水线在开启 Pages 之前就已经失败，点 Re-run all jobs 重跑）"
-echo "   4. 手机打开最终作品链接：https://xheng-cs.github.io/Mihuo-Campus/"
+echo "📌 Pages 说明：仓库已配置为「Deploy from a branch（main / 根目录）」发布，"
+echo "   本次 push 后 GitHub 会自动重新发布，约 1 分钟后生效，无需额外操作。"
+echo "   若需检查：https://github.com/xheng-cs/Mihuo-Campus/settings/pages"
+echo "   在线作品：https://xheng-cs.github.io/Mihuo-Campus/"
