@@ -10,7 +10,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-REMOTE="${REMOTE:-https://github.com/xheng-cs/mihuo-campus-app.git}"
+REMOTE="${REMOTE:-https://github.com/xheng-cs/Mihuo-Campus.git}"
 
 if git remote -v | grep -q "Mihuo-Campus"; then
   git remote set-url origin "$REMOTE"
@@ -50,8 +50,8 @@ echo ""
 echo "✅ 代码已推送（目录结构：index.html / css/ / js/ / test/ / tools/ / .github/）。"
 echo ""
 echo "📌 还差一步：开启 Pages（一次性设置，建议现在就做）"
-echo "   1. 打开 https://github.com/xheng-cs/mihuo-campus-app/settings/pages"
+echo "   1. 打开 https://github.com/xheng-cs/Mihuo-Campus/settings/pages"
 echo "   2. Build and deployment → Source 选「GitHub Actions」→ Save"
 echo "   3. 回到仓库 Actions 页签，等「Deploy Pages」变绿勾 ✅"
 echo "      （若这次推送触发的流水线在开启 Pages 之前就已经失败，点 Re-run all jobs 重跑）"
-echo "   4. 手机打开最终作品链接：https://xheng-cs.github.io/mihuo-campus-app/"
+echo "   4. 手机打开最终作品链接：https://xheng-cs.github.io/Mihuo-Campus/"
