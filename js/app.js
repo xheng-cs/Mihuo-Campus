@@ -362,6 +362,10 @@
   }
 
   function renderMine() {
+    // 同步页签高亮（避免切换视图后高亮与内容不一致）
+    $$('.mine-tab').forEach(function (b) {
+      b.classList.toggle('is-active', b.dataset.tab === mineTab);
+    });
     mineStatsHtml();
     mineListHtml();
   }
@@ -925,6 +929,16 @@
         var t = e.target.closest('[data-open]');
         if (t) openDetail(t.dataset.open);
       });
+    });
+    // 我的空间页签切换：收藏 / 我的报名 / 我的发布
+    $('#mine-tabs').addEventListener('click', function (e) {
+      var tab = e.target.closest('.mine-tab');
+      if (!tab) return;
+      mineTab = tab.dataset.tab || 'favorites';
+      $$('.mine-tab').forEach(function (b) {
+        b.classList.toggle('is-active', b.dataset.tab === mineTab);
+      });
+      mineListHtml();
     });
     $('#mine-list').addEventListener('click', function (e) {
       var unfav = e.target.closest('[data-unfav]');

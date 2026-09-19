@@ -122,6 +122,33 @@
       var card = document.querySelector('.card[data-id="5"] .card-foot');
       return card && card.textContent.indexOf('已报名') === -1 ? !!document.querySelector('.card[data-id="5"]') : true;
     })());
+
+    // 我的空间页签切换（回归检查：曾经漏绑定点击事件导致页签点不动）
+    document.querySelector('.nav-btn[data-nav="mine"]').click();
+    check('切到「我的」页签栏存在', document.querySelectorAll('.mine-tab').length === 3);
+
+    document.querySelector('.mine-tab[data-tab="signups"]').click();
+    var signupRow = document.querySelector('#mine-list .mine-row-title');
+    check('「我的报名」可切换并显示报名记录',
+      document.querySelector('.mine-tab[data-tab="signups"]').classList.contains('is-active') &&
+      !!signupRow && signupRow.textContent.indexOf('校园公益志愿服务活动') !== -1);
+
+    document.querySelector('.mine-tab[data-tab="posts"]').click();
+    var postRow = document.querySelector('#mine-list .mine-row-title');
+    check('「我的发布」可切换并显示发布内容',
+      document.querySelector('.mine-tab[data-tab="posts"]').classList.contains('is-active') &&
+      !!postRow && postRow.textContent.indexOf('冒烟测试组局') !== -1);
+
+    document.querySelector('.mine-tab[data-tab="favorites"]').click();
+    var favRow = document.querySelector('#mine-list .mine-row-title');
+    check('「收藏」可切换并显示收藏内容',
+      !!favRow && favRow.textContent.indexOf('AI 应用入门公开课') !== -1);
+    check('收集/报名/发布 三个计数正确', (function () {
+      return document.getElementById('count-fav').textContent === '1' &&
+             document.getElementById('count-signup').textContent === '1' &&
+             document.getElementById('count-post').textContent === '1';
+    })());
+
     report(2);
   }
 
