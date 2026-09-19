@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="觅活 Mihuo Campus —— 校园活动与机会聚合平台：发现、理解、参与并发布校园里的每一次机会。">
+  <title>觅活 · 校园活动与机会</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366F1'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='PingFang SC, sans-serif' font-weight='700'%3E觅%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ===================== 顶部导航 ===================== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#" data-nav="discover">
+        <span class="brand-mark">觅</span>
+        <span class="brand-text">
+          <strong>觅活</strong>
+          <small>Mihuo Campus</small>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <button class="nav-btn is-active" data-nav="discover">🧭 发现</button>
+        <button class="nav-btn" data-nav="timeline">📅 时间轴</button>
+        <button class="nav-btn" data-nav="mine">⭐ 我的</button>
+      </nav>
+      <div class="topbar-actions">
+        <label class="freshman-toggle" title="只显示零基础 / 新生友好内容">
+          <input type="checkbox" id="freshman-toggle">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-label">🌱 新生模式</span>
+        </label>
+        <button class="btn btn-primary" id="btn-publish-top">＋ 发布活动</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ===================== 发现页 ===================== -->
+    <section class="view is-active" id="view-discover" aria-label="发现">
+      <div class="hero">
+        <div class="hero-glow glow-a"></div>
+        <div class="hero-glow glow-b"></div>
+        <h1>把校园里的每一次机会<br>都摆到新生眼前</h1>
+        <p class="hero-sub">比赛 · 讲座 · 招募 · 志愿 · 组队 · 约玩 —— 来自校级、学院与学生的一站式信息聚合</p>
+        <div class="hero-search">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="search-input" placeholder="搜索活动、比赛、招募关键词…（如：AI / 零基础 / 组队）" autocomplete="off">
+          <kbd class="search-kbd">回车筛选</kbd>
+        </div>
+        <div class="hero-chips">
+          <button class="chip chip-hot" data-quick="urgent">🔥 3 天内截止 <em id="stat-urgent">0</em></button>
+          <button class="chip" data-quick="beginner">🌱 零基础友好 <em id="stat-beginner">0</em></button>
+          <button class="chip" data-quick="long">🎁 长期招募 <em id="stat-long">0</em></button>
+          <button class="chip" data-quick="joinable">✅ 现在可参与 <em id="stat-joinable">0</em></button>
+        </div>
+        <p class="hero-meta">模拟校园数据 · 时间基准 <strong id="base-now-text"></strong> · 数据本地保存</p>
+      </div>
+
+      <!-- 截止雷达 -->
+      <div class="radar" id="radar-strip" hidden>
+        <div class="radar-head">
+          <h2>⏰ 截止雷达</h2>
+          <span class="radar-tip">72 小时内截止 · 别让机会溜走</span>
+        </div>
+        <div class="radar-scroll" id="radar-list"></div>
+      </div>
+
+      <!-- 筛选栏 -->
+      <div class="filterbar">
+        <div class="filter-cats" id="filter-cats" role="tablist" aria-label="分类筛选"></div>
+        <div class="filter-controls">
+          <select id="filter-source" class="select" aria-label="来源筛选">
+            <option value="all">全部来源</option>
+            <option value="school">校级发布</option>
+            <option value="college">学院发布</option>
+            <option value="student">学生发布</option>
+          </select>
+          <select id="filter-status" class="select" aria-label="状态筛选">
+            <option value="all">全部状态</option>
+            <option value="joinable">可报名 / 可参与</option>
+            <option value="urgent">即将截止</option>
+            <option value="long">长期招募</option>
+            <option value="noReg">无需报名</option>
+            <option value="waitlist">候补可入场</option>
+            <option value="resource">资料领取</option>
+            <option value="closed">已截止</option>
+            <option value="ended">已结束</option>
+          </select>
+          <select id="filter-sort" class="select" aria-label="排序方式">
+            <option value="recommended">推荐排序</option>
+            <option value="deadline">截止时间最近</option>
+            <option value="start">开始时间最近</option>
+            <option value="newest">最新发布</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="result-meta" id="result-meta"></div>
+      <div class="card-grid" id="card-grid"></div>
+      <div class="empty-state" id="empty-state" hidden>
+        <div class="empty-icon">🔭</div>
+        <p class="empty-title">没有找到符合条件的信息</p>
+        <p class="empty-sub">换个关键词或清空筛选试试，或者自己发布一个！</p>
+        <button class="btn btn-primary" id="btn-empty-publish">＋ 发布一条信息</button>
+      </div>
+    </section>
+
+    <!-- ===================== 时间轴页 ===================== -->
+    <section class="view" id="view-timeline" aria-label="时间轴" hidden>
+      <div class="page-head">
+        <h1>📅 未来 7 天日程</h1>
+        <p>活动开始时间与报名截止点，全部排进一条时间轴 —— 今天干什么、明天截止什么，一眼看清。</p>
+      </div>
+      <div class="timeline" id="timeline"></div>
+      <div class="timeline-beyond" id="timeline-beyond" hidden>
+        <h2>🔭 更远的日子</h2>
+        <div class="beyond-list" id="beyond-list"></div>
+      </div>
+    </section>
+
+    <!-- ===================== 我的页 ===================== -->
+    <section class="view" id="view-mine" aria-label="我的" hidden>
+      <div class="page-head">
+        <h1>⭐ 我的空间</h1>
+        <p>收藏、报名与发布都保存在本地浏览器中，刷新或重新打开也不会丢。</p>
+      </div>
+      <div class="mine-stats" id="mine-stats"></div>
+      <div class="mine-tabs" id="mine-tabs">
+        <button class="mine-tab is-active" data-tab="favorites">收藏 <em id="count-fav">0</em></button>
+        <button class="mine-tab" data-tab="signups">我的报名 <em id="count-signup">0</em></button>
+        <button class="mine-tab" data-tab="posts">我的发布 <em id="count-post">0</em></button>
+      </div>
+      <div class="mine-list" id="mine-list"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p><strong>觅活 Mihuo Campus</strong> · 模拟数据仅用于产品演示，不代表学校真实通知 · 全部操作保存在本地浏览器</p>
+  </footer>
+
+  <!-- 移动端悬浮发布按钮 -->
+  <button class="fab" id="btn-publish-fab" aria-label="发布活动">＋</button>
+
+  <!-- ===================== 详情弹窗 ===================== -->
+  <div class="modal" id="modal-detail" hidden>
+    <div class="modal-backdrop" data-close="detail"></div>
+    <div class="modal-panel modal-detail" role="dialog" aria-modal="true" aria-label="活动详情">
+      <button class="modal-close" data-close="detail" aria-label="关闭">✕</button>
+      <div id="detail-body"></div>
+    </div>
+  </div>
+
+  <!-- ===================== 报名弹窗 ===================== -->
+  <div class="modal" id="modal-signup" hidden>
+    <div class="modal-backdrop" data-close="signup"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="报名">
+      <button class="modal-close" data-close="signup" aria-label="关闭">✕</button>
+      <h2 class="modal-title">📝 报名信息</h2>
+      <p class="modal-sub" id="signup-target"></p>
+      <form id="signup-form" novalidate>
+        <label class="field">
+          <span>姓名 <b>*</b></span>
+          <input type="text" name="name" required maxlength="20" placeholder="你的姓名">
+        </label>
+        <label class="field">
+          <span>年级</span>
+          <select name="grade">
+            <option value="">请选择</option>
+            <option>大一</option><option>大二</option><option>大三</option><option>大四</option><option>研究生</option>
+          </select>
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>学号</span>
+            <input type="text" name="sid" maxlength="20" placeholder="选填">
+          </label>
+          <label class="field">
+            <span>联系方式</span>
+            <input type="text" name="contact" maxlength="40" placeholder="手机号 / 微信号（选填）">
+          </label>
+        </div>
+        <label class="field" id="signup-intro-field" hidden>
+          <span>简短自我介绍 <b>*</b></span>
+          <textarea name="intro" rows="3" maxlength="200" placeholder="一句话介绍你的专业、兴趣或相关经历（该招募要求提交简短自我介绍）"></textarea>
+        </label>
+        <div class="notice notice-amber" id="signup-audience-hint" hidden></div>
+        <div class="notice notice-blue" id="signup-audit-hint" hidden></div>
+        <p class="form-note">⚠️ 模拟报名：数据仅保存在本地浏览器，用于体验完整参与流程。</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" data-close="signup">取消</button>
+          <button type="submit" class="btn btn-primary">确认提交</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== 发布弹窗（三步） ===================== -->
+  <div class="modal" id="modal-publish" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel modal-publish" role="dialog" aria-modal="true" aria-label="发布活动">
+      <button class="modal-close" id="publish-close" aria-label="关闭">✕</button>
+      <h2 class="modal-title" id="publish-title">✍️ 发布校园信息</h2>
+      <ol class="steps" id="publish-steps">
+        <li class="step is-active" data-step="1"><i>1</i>基本信息</li>
+        <li class="step" data-step="2"><i>2</i>时间地点</li>
+        <li class="step" data-step="3"><i>3</i>确认发布</li>
+      </ol>
+      <form id="publish-form" novalidate>
+        <!-- 第 1 步 -->
+        <div class="step-pane" data-pane="1">
+          <div class="field-row">
+            <label class="field">
+              <span>类型 <b>*</b></span>
+              <select name="kind">
+                <option value="activity">活动</option>
+                <option value="recruit">招募 / 组队</option>
+                <option value="resource">资源分享</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>分类 <b>*</b></span>
+              <select name="category" id="publish-category"></select>
+            </label>
+          </div>
+          <label class="field">
+            <span>标题 <b>*</b></span>
+            <input type="text" name="title" required maxlength="30" placeholder="一句话说清楚是什么（30 字内）">
+          </label>
+          <label class="field">
+            <span>简介 <b>*</b></span>
+            <textarea name="summary" required rows="4" maxlength="200" placeholder="面向谁、做什么、有什么要求…（200 字内）"></textarea>
+            <small class="field-counter" id="summary-counter">0 / 200</small>
+          </label>
+        </div>
+        <!-- 第 2 步 -->
+        <div class="step-pane" data-pane="2" hidden>
+          <div class="field-row">
+            <label class="field">
+              <span>开始时间</span>
+              <input type="datetime-local" name="start">
+              <small class="field-hint">不确定可不填，或选一个大致时间</small>
+            </label>
+            <label class="field">
+              <span>报名 / 截止时间</span>
+              <input type="datetime-local" name="deadline">
+              <small class="field-hint">长期招募可留空</small>
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field">
+              <span>地点</span>
+              <input type="text" name="place" maxlength="40" placeholder="教学楼 / 场地（可写“待定”）">
+            </label>
+            <label class="field">
+              <span>人数上限</span>
+              <input type="number" name="capacity" min="1" max="9999" placeholder="选填">
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field">
+              <span>面向对象</span>
+              <select name="audience">
+                <option value="不限">不限</option>
+                <option value="大一新生">大一新生</option>
+                <option value="大一、大二学生">大一、大二学生</option>
+                <option value="大二及以上学生">大二及以上学生</option>
+                <option value="全校学生">全校学生</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>费用</span>
+              <select name="fee">
+                <option value="">未定 / 免费</option>
+                <option value="AA">AA</option>
+                <option value="收费">收费</option>
+              </select>
+            </label>
+          </div>
+          <label class="field">
+            <span>联系方式</span>
+            <input type="text" name="contact" maxlength="40" placeholder="选填。请勿诱导他人私下转账，涉及私人微信会触发风险提示">
+            <div class="notice notice-amber" id="publish-contact-hint" hidden></div>
+          </label>
+        </div>
+        <!-- 第 3 步 -->
+        <div class="step-pane" data-pane="3" hidden>
+          <div class="publish-review" id="publish-review"></div>
+          <div class="notice notice-amber" id="publish-risk-hint" hidden></div>
+          <div class="notice notice-blue">
+            <strong>发布须知</strong>：请勿发布兼职刷单、诱导转账、虚假夸大或纯商业推广内容；
+            涉及私下交易、私加微信的信息将被自动标记风险提示并降低推荐排序；
+            学生发布内容统一显示「待核验」标记，接受其他同学举报。
+          </div>
+          <label class="checkbox-row">
+            <input type="checkbox" id="publish-agree" required>
+            <span>我已阅读发布须知，确认内容真实、与校园生活相关</span>
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="publish-prev" hidden>上一步</button>
+          <button type="button" class="btn btn-ghost" id="publish-cancel">取消</button>
+          <button type="button" class="btn btn-primary" id="publish-next">下一步</button>
+          <button type="submit" class="btn btn-primary" id="publish-submit" hidden>确认发布</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== 举报弹窗 ===================== -->
+  <div class="modal" id="modal-report" hidden>
+    <div class="modal-backdrop" data-close="report"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="举报信息">
+      <button class="modal-close" data-close="report" aria-label="关闭">✕</button>
+      <h2 class="modal-title">🚩 举报这条信息</h2>
+      <p class="modal-sub" id="report-target"></p>
+      <form id="report-form" novalidate>
+        <div class="radio-list" id="report-reasons">
+          <label class="radio-row"><input type="radio" name="reason" value="广告 / 商业推广"><span>广告 / 商业推广</span></label>
+          <label class="radio-row"><input type="radio" name="reason" value="疑似诈骗 / 非正规兼职"><span>疑似诈骗 / 非正规兼职</span></label>
+          <label class="radio-row"><input type="radio" name="reason" value="信息不实 / 已失效"><span>信息不实 / 已失效</span></label>
+          <label class="radio-row"><input type="radio" name="reason" value="内容不适宜"><span>内容不适宜</span></label>
+          <label class="radio-row"><input type="radio" name="reason" value="其他"><span>其他</span></label>
+        </div>
+        <label class="field">
+          <span>补充说明（选填）</span>
+          <textarea name="note" rows="2" maxlength="120" placeholder="简单描述你发现的问题"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" data-close="report">取消</button>
+          <button type="submit" class="btn btn-danger">提交举报</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== 通用确认弹窗 ===================== -->
+  <div class="modal" id="modal-confirm" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel modal-small" role="dialog" aria-modal="true" aria-label="确认操作">
+      <button class="modal-close" id="confirm-close" aria-label="关闭">✕</button>
+      <h2 class="modal-title" id="confirm-title">确认操作</h2>
+      <p class="modal-sub" id="confirm-text"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="confirm-no">取消</button>
+        <button type="button" class="btn btn-danger" id="confirm-yes">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toast-wrap" aria-live="polite"></div>
+
+  <noscript>
+    <div style="padding:40px;text-align:center;font-family:sans-serif">
+      觅活需要启用 JavaScript 才能使用。请开启浏览器 JavaScript 后刷新页面。
+    </div>
+  </noscript>
+
+  <script src="js/data.js"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
