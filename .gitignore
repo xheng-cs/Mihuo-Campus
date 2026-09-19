@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+*.log
+.idea/
+.vscode/
+
+# 冒烟测试临时产物
+.smoke.html
