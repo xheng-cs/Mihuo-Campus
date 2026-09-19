@@ -7,6 +7,15 @@
 把来源各异、质量参差、状态多变的校园信息，整理成一张
 **「看得懂、分得清、信得过、赶得上」** 的校园机会地图。
 
+## 🔗 项目链接
+
+- **GitHub 仓库**：<https://github.com/xheng-cs/Mihuo-campus>
+- **可正常运行的最终作品（GitHub Pages 在线演示）**：<https://xheng-cs.github.io/Mihuo-campus/>
+
+> 在线演示由 GitHub Actions 自动部署（见 `.github/workflows/deploy-pages.yml`）。
+> 首次部署：仓库 **Settings → Pages → Source 选择「GitHub Actions」**，
+> push 到 main 分支后即自动发布。本地运行方式见下文「四、运行方式」。
+
 ---
 
 ## 一、产品名称
@@ -42,7 +51,9 @@
 
 ## 四、运行方式
 
-**零依赖，两种方式任选：**
+**在线体验（推荐，无需任何安装）**：<https://xheng-cs.github.io/Mihuo-campus/>
+
+**本地运行，零依赖，两种方式任选：**
 
 ```bash
 # 方式一：直接双击 index.html（Chrome / Edge / Safari 均可）
