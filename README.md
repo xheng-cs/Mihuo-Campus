@@ -9,12 +9,17 @@
 
 ## 🔗 项目链接
 
-- **GitHub 仓库**：<https://github.com/xheng-cs/Mihuo-campus>
-- **可正常运行的最终作品（GitHub Pages 在线演示）**：<https://xheng-cs.github.io/Mihuo-campus/>
+- **GitHub 仓库**：<https://github.com/xheng-cs/Mihuo-Campus>
+- **可正常运行的最终作品（GitHub Pages 在线演示，公网链接，手机可直接打开）**：<https://xheng-cs.github.io/Mihuo-Campus/>
 
 > 在线演示由 GitHub Actions 自动部署（见 `.github/workflows/deploy-pages.yml`）。
 > 首次部署：仓库 **Settings → Pages → Source 选择「GitHub Actions」**，
 > push 到 main 分支后即自动发布。本地运行方式见下文「四、运行方式」。
+>
+> **如果在线链接打不开，依次检查**：
+> ① 代码是否已推送到仓库（仓库页面能看到 index.html 等文件，而不是空的）；
+> ② Settings → Pages 是否已开启（Source = GitHub Actions）；
+> ③ Actions 页签里「Deploy Pages」是否绿勾；部署成功后约 1 分钟生效。
 
 ---
 
@@ -51,7 +56,7 @@
 
 ## 四、运行方式
 
-**在线体验（推荐，无需任何安装）**：<https://xheng-cs.github.io/Mihuo-campus/>
+**在线体验（推荐，无需任何安装）**：<https://xheng-cs.github.io/Mihuo-Campus/>
 
 **本地运行，零依赖，两种方式任选：**
 
